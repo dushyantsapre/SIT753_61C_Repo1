@@ -1,19 +1,19 @@
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = 'my-git-hub-project1'
+        IMAGE_NAME = 'my-git-hub-project'
     }
     stages {
         stage('Build') {
             steps {
 				script {
 					// Stop and remove the existing Docker container if it exists
-					// sh 'docker stop ${IMAGE_NAME} || true'
-					// sh 'docker rm ${IMAGE_NAME} || true'
+					sh 'docker stop ${IMAGE_NAME} || true'
+					sh 'docker rm ${IMAGE_NAME} || true'
 					// Build the Docker image. Assumes Dockerfile includes 'npm install' and 'npm run test'.
 					echo "Building Docker image including npm install and test."
-					// sh 'DOCKER_BUILDKIT=1 docker build . -t ${IMAGE_NAME}'
-					// sh 'docker run -d --name ${IMAGE_NAME} -p 8000:8000 ${IMAGE_NAME}'
+					sh 'DOCKER_BUILDKIT=1 docker build . -t ${IMAGE_NAME}'
+					sh 'docker run -d --name ${IMAGE_NAME} -p 8000:8000 ${IMAGE_NAME}'
 				}
             }
         }
