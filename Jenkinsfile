@@ -1,1 +1,75 @@
-
+pipeline {
+    agent any
+    environment {
+        IMAGE_NAME = 'my-git-hub-project1'
+    }
+    stages {
+        stage('Build') {
+            steps {
+				script {
+					// Stop and remove the existing Docker container if it exists
+					sh 'docker stop ${IMAGE_NAME} || true'
+					sh 'docker rm ${IMAGE_NAME} || true'
+					// Build the Docker image. Assumes Dockerfile includes 'npm install' and 'npm run test'.
+					echo "Building Docker image including npm install and test."
+					sh 'DOCKER_BUILDKIT=1 docker build . -t ${IMAGE_NAME}'
+					sh 'docker run -d --name ${IMAGE_NAME} -p 8001:8001 ${IMAGE_NAME}'
+				}
+            }
+        }
+        
+		stage('Unit and Integration Tests') {
+            steps {
+                echo "Running unit and integration tests. Tool suggestion: JUnit for Java, Mockito for mocks, Jest or Mocha for Node.js."
+                // Simulate test command
+                echo "mvn test or npm test"
+            }
+        }
+        stage('Code Analysis') {
+            steps {
+                echo "Analyzing code quality. Tool suggestion: SonarQube."
+                // Simulate code analysis command
+                echo "Integrate SonarQube scanning in your CI process."
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                echo "Performing security scans. Tool suggestion: OWASP ZAP for DAST or SonarQube for integrated security scanning."
+                // Simulate security scan command
+                echo "Running OWASP ZAP or SonarQube security scan"
+            }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                echo "Deploying application to a staging environment. Assuming usage of Docker and deployment scripts for AWS EC2."
+                // Simulate deployment command
+                echo "Running deploy_staging.sh for Docker deployment to AWS EC2 staging instance"
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo "Running integration tests on the staging environment. Tool suggestion: Selenium for UI testing, Postman for API testing."
+                // Simulate integration test command
+                echo "Running Selenium tests or Postman collection against staging environment"
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                echo "Deploying application to the production environment. This can involve Docker for container management and AWS CLI or Ansible for deployment to AWS EC2."
+                // Simulate deployment command
+                echo "Running deploy_production.sh for Docker deployment to AWS EC2 production instance"
+            }
+        }
+      
+    }
+     post {
+        always {
+            // Configure email notifications
+            mail to: 'dushyantsapre@yahoo.com',
+                 subject: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': ${currentBuild.currentResult}",
+                 body: "Check the Jenkins console at ${env.BUILD_URL} to view details."
+            // Attach logs if possible. This might require additional steps or plugins.
+			echo 'Pipeline execution complete.'
+        }
+    }
+}
