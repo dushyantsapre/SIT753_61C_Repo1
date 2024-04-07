@@ -80,6 +80,7 @@ pipeline {
                             to: 'sapre.dushyant@gmail.com'
                     }
                 }
+            }
         }
         stage('Deploy to Staging') {
             steps {
