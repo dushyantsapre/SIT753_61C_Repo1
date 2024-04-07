@@ -24,8 +24,8 @@ pipeline {
                 echo "Running unit and integration tests. Tool suggestion: JUnit for Java, Mockito for mocks, Jest or Mocha for Node.js."
                 // Simulate test command
                 echo "mvn test or npm test"
-                mail bcc: '', body: 'Hello, This is an email from jenkins pipeline.', cc: '', from: '', 
-                replyTo: '', subject: 'Security Scan stage status', to: 'sapre.dushyant@gmail.com'
+                mail bcc: '', body: 'Hello, </br> This is an email from jenkins pipeline.', cc: '', from: '', 
+                replyTo: '', subject: 'Unit and Integration stage status', to: 'sapre.dushyant@gmail.com'
             }
         }
         stage('Code Analysis') {
