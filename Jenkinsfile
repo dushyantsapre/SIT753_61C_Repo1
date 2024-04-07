@@ -37,7 +37,7 @@ pipeline {
                         def buildLogPath = "/var/lib/jenkins/jobs/MyGitHubProject/builds/${env.BUILD_NUMBER}/log"
                         def workspaceLogPath = "${env.WORKSPACE}/build.log"
                         sh "cp ${buildLogPath} ${workspaceLogPath}"
-                        
+
                         emailext(
                             subject: "Unit and Integration Tests stage: ${result}",
                             body: """Hello,
@@ -54,8 +54,8 @@ The 'Unit and Integration Tests stage' completed with status: ${result}.
 Best Regards,
 Jenkins""",
 to: 'sapre.dushyant@gmail.com',
-attachmentsPattern: '/var/lib/jenkins/workspace/build.log'
-                        )                            
+attachmentsPattern: ${workspaceLogPath}
+                    )                            
                             
                 }
             }
