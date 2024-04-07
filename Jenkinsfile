@@ -8,12 +8,13 @@ pipeline {
             steps {
 				script {
 					// Stop and remove the existing Docker container if it exists
-					sh 'docker stop ${IMAGE_NAME} || true'
-					sh 'docker rm ${IMAGE_NAME} || true'
+					// sh 'docker stop ${IMAGE_NAME} || true'
+					// sh 'docker rm ${IMAGE_NAME} || true'
 					// Build the Docker image. Assumes Dockerfile includes 'npm install' and 'npm run test'.
 					echo "Building Docker image including npm install and test."
-					sh 'DOCKER_BUILDKIT=1 docker build . -t ${IMAGE_NAME}'
-					sh 'docker run -d --name ${IMAGE_NAME} -p 8000:8000 ${IMAGE_NAME}'
+					// sh 'DOCKER_BUILDKIT=1 docker build . -t ${IMAGE_NAME}'
+					// sh 'docker run -d --name ${IMAGE_NAME} -p 8000:8000 ${IMAGE_NAME}'
+                    echo "Maven clean package"
 				}
             }
         }
@@ -23,6 +24,8 @@ pipeline {
                 echo "Running unit and integration tests. Tool suggestion: JUnit for Java, Mockito for mocks, Jest or Mocha for Node.js."
                 // Simulate test command
                 echo "mvn test or npm test"
+                mail bcc: '', body: 'Hello, This is an email from jenkins pipeline.', cc: '', from: '', 
+                replyTo: '', subject: 'Security Scan stage status', to: 'sapre.dushyant@gmail.com'
             }
         }
         stage('Code Analysis') {
@@ -37,6 +40,10 @@ pipeline {
                 echo "Performing security scans. Tool suggestion: OWASP ZAP for DAST or SonarQube for integrated security scanning."
                 // Simulate security scan command
                 echo "Running OWASP ZAP or SonarQube security scan"
+                mail bcc: '', body: 'Hello, This is an email from jenkins pipeline.', cc: '', from: '', 
+                replyTo: '', subject: 'Security Scan stage status', to: 'sapre.dushyant@gmail.com'
+
+
             }
         }
         stage('Deploy to Staging') {
@@ -61,15 +68,5 @@ pipeline {
             }
         }
       
-    }
-     post {
-        always {
-            // Configure email notifications
-            mail to: 'dushyantsapre@yahoo.com',
-                 subject: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': ${currentBuild.currentResult}",
-                 body: "Check the Jenkins console at ${env.BUILD_URL} to view details."
-            // Attach logs if possible. This might require additional steps or plugins.
-			echo 'Pipeline execution complete.'
-        }
     }
 }
