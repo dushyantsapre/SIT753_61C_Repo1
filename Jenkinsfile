@@ -56,8 +56,9 @@ pipeline {
                 echo "Performing security scans. Tool suggestion: OWASP ZAP for DAST or SonarQube for integrated security scanning."
                 // Simulate security scan command
                 echo "Running OWASP ZAP or SonarQube security scan"
+                def status = currentBuild.currentResult
                 mail bcc: '', body: 'Hello, This is an email from jenkins pipeline.', cc: '', from: '', 
-                replyTo: '', subject: 'Security Scan stage status', to: 'sapre.dushyant@gmail.com'
+                replyTo: '', subject: 'Security Scan stage status': ${status}, to: 'sapre.dushyant@gmail.com'
 
 
             }
