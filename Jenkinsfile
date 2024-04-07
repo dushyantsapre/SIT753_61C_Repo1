@@ -29,7 +29,7 @@ pipeline {
                 always {
                     script {
                         def result = currentBuild.currentResult
-                        def subject = "Build ${result}: Job '${env.JOB_NAME}'"
+                        def subject = "Build: ${result}, Job: '${env.JOB_NAME}'"
 
                         mail bcc: '',
                             subject: "Unit and Integration Tests stage status: ${result}",
@@ -37,7 +37,7 @@ pipeline {
 
 							This is an email from the Jenkins pipeline.
 							The 'Unit and Integration Tests' stage completed with status: ${result}.
-                            ${subject}.
+                                ${subject}.
 
 							Best,
 							Jenkins""",
@@ -58,11 +58,28 @@ pipeline {
                 echo "Performing security scans. Tool suggestion: OWASP ZAP for DAST or SonarQube for integrated security scanning."
                 // Simulate security scan command
                 echo "Running OWASP ZAP or SonarQube security scan"
-                mail bcc: '', body: 'Hello, This is an email from jenkins pipeline.', cc: '', from: '', 
-                replyTo: '', subject: 'Security Scan stage status', to: 'sapre.dushyant@gmail.com'
-
-
+                // mail bcc: '', body: 'Hello, This is an email from jenkins pipeline.', cc: '', from: '', 
+                // replyTo: '', subject: 'Security Scan stage status', to: 'sapre.dushyant@gmail.com'
             }
+            post {
+                always {
+                    script {
+                        def result = currentBuild.currentResult
+                        def subject = "Build: ${result}, Job: '${env.JOB_NAME}'"
+
+                        mail bcc: '',
+                            subject: "Security Scan stage: ${result}",
+                            body: """Hello,
+
+							This is an email from the Jenkins pipeline.
+							The 'Security Scan stage' completed with status: ${result}.
+                                ${subject}.
+
+							Best,
+							Jenkins""",
+                            to: 'sapre.dushyant@gmail.com'
+                    }
+                }
         }
         stage('Deploy to Staging') {
             steps {
