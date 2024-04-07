@@ -28,7 +28,7 @@ pipeline {
             steps {
 				echo "Executing Unit and Integration Tests stage." 
                 echo "Tool suggestion: JUnit for Java; Mockito for mocks; Jest or Mocha for Node.js; Maven for unit, integrations and other forms of automated tests."
-                echo: "Purpose: Identifying and fixing issues in the development cycle."
+                echo "Purpose: Identifying and fixing issues in the development cycle."
                 
                 script {
                         def result = currentBuild.currentResult
