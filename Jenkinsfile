@@ -65,7 +65,8 @@ pipeline {
                 always {
                     script {
                         def result = currentBuild.currentResult
-                        def subject = "Build: ${result}, Job: '${env.JOB_NAME}'"
+                        def result1 = currentBuild.currentBuild
+                        def subject = "Build Result: ${result}, Job: '${env.JOB_NAME}', Build: ${result1}"
 
                         mail bcc: '',
                             subject: "Security Scan stage: ${result}",
