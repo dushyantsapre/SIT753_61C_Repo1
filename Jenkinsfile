@@ -79,23 +79,26 @@ Jenkins""",
                         def nodeName = env.NODE_NAME ?: 'Unknown Node'
                         def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
                         def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
+                        def buildURL = env.BUILD_URL
 
                         mail bcc: '',
                             subject: "Security Scan stage: ${result}",
                             body: """Hello,
 
-							This is an email from the Jenkins pipeline.
-							The 'Security Scan stage' completed with status: ${result}.
-                            
-                            - Job Name: ${jobName}
-                            - Build Number: ${buildNumber}
-                            - Node Name: ${nodeName}
-                            - Result: ${result}
+This is an email from the Jenkins pipeline.
+The 'Security Scan stage' completed with status: ${result}.
 
-							Best,
-							Jenkins""",
+- Build URL: ${buildURL}                            
+- Job Name: ${jobName}
+- Build Number: ${buildNumber}
+- Node Name: ${nodeName}
+- Result: ${result}
+
+
+Best,
+Jenkins""",
                             to: 'sapre.dushyant@gmail.com',
-                            attachmentsPattern: logFile
+                            
                     }
                 }
             }
