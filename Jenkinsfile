@@ -47,10 +47,9 @@ Jenkins"""
                         // Sending the email
                         mail bcc: '',
                             from: 'AmazonEC2 Jenkins Setup'
-                            to: 'sapre.dushyant@gmail.com',
                             subject: "Unit and Integration Tests stage status: ${result}",
-                            body: body
-                            
+                            body: body,
+                            to: 'sapre.dushyant@gmail.com'
                     }
                 }
             }
