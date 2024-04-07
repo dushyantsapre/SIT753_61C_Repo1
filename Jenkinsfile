@@ -28,18 +28,20 @@ pipeline {
             post {
                 always {
                     script {
-                        def status = currentBuild.currentResult
-                        emailext(
-                            subject: "Unit and Integration Tests stage status: ${status}",
+                        def result = currentBuild.currentResult
+                        def subject = "Build ${result}: Job '${env.JOB_NAME}'"
+
+                        mail bcc: '',
+                            subject: "Unit and Integration Tests stage status: ${result}",
                             body: """Hello,
 
 							This is an email from the Jenkins pipeline.
-							The 'Unit and Integration Tests' stage completed with status: ${status}.
+							The 'Unit and Integration Tests' stage completed with status: ${result}.
+                            ${subject}.
 
 							Best,
 							Jenkins""",
                             to: 'sapre.dushyant@gmail.com'
-                        )
                     }
                 }
             }
@@ -56,9 +58,8 @@ pipeline {
                 echo "Performing security scans. Tool suggestion: OWASP ZAP for DAST or SonarQube for integrated security scanning."
                 // Simulate security scan command
                 echo "Running OWASP ZAP or SonarQube security scan"
-                def status = currentBuild.currentResult
                 mail bcc: '', body: 'Hello, This is an email from jenkins pipeline.', cc: '', from: '', 
-                replyTo: '', subject: 'Security Scan stage status': ${status}, to: 'sapre.dushyant@gmail.com'
+                replyTo: '', subject: 'Security Scan stage status', to: 'sapre.dushyant@gmail.com'
 
 
             }
