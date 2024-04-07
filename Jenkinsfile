@@ -24,14 +24,17 @@ pipeline {
 				echo "Running unit and integration tests. Tool suggestion: JUnit for Java, Mockito for mocks, Jest or Mocha for Node.js."
                 // Simulate test command
                 echo "mvn test or npm test"
+                
                 script {
                         def result = currentBuild.currentResult
                         def jobName = env.JOB_NAME
                         def buildNumber = env.BUILD_NUMBER
                         def nodeName = env.NODE_NAME ?: 'Unknown Node'
                         def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
-                        def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
+                        //def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
                         def buildURL = env.BUILD_URL
+                        // Copy the log file into the current workspace
+                        sh 'cp /var/lib/jenkins/jobs/MyGitHubProject/builds/${buildNumber}/log /var/lib/jenkins/workspace/build.log'
 
                         emailext(
                             subject: "Unit and Integration Tests stage: ${result}",
@@ -49,7 +52,7 @@ The 'Unit and Integration Tests stage' completed with status: ${result}.
 Best Regards,
 Jenkins""",
 to: 'sapre.dushyant@gmail.com',
-attachmentsPattern: logFile
+attachmentsPattern: '/var/lib/jenkins/workspace/build.log'
                         )                            
                             
                 }
