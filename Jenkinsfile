@@ -34,7 +34,7 @@ pipeline {
                         //def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
                         def buildURL = env.BUILD_URL
                         // Copy the log file into the current workspace
-                        sh 'cp /var/lib/jenkins/jobs/MyGitHubProject/builds/${buildNumber}/log /var/lib/jenkins/workspace/build.log'
+                        sh "cp /var/lib/jenkins/jobs/MyGitHubProject/builds/${buildNumber}/log /var/lib/jenkins/workspace/build.log"
 
                         emailext(
                             subject: "Unit and Integration Tests stage: ${result}",
