@@ -25,9 +25,7 @@ pipeline {
                 // Simulate test command
                 echo "mvn test or npm test"
             }
-            post {
-                always {
-                    script {
+            script {
                         def result = currentBuild.currentResult
                         def jobName = env.JOB_NAME
                         def buildNumber = env.BUILD_NUMBER
@@ -35,8 +33,8 @@ pipeline {
                         def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
                         def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
                         def buildURL = env.BUILD_URL
-
-                        mail bcc: '',
+                        
+                        emailext(
                             subject: "Unit and Integration Tests stage: ${result}",
                             body: """Hello,
 
@@ -51,9 +49,9 @@ The 'Unit and Integration Tests stage' completed with status: ${result}.
 
 Best,
 Jenkins""",
-                            to: 'sapre.dushyant@gmail.com'
-                    }
-                }
+to: 'sapre.dushyant@gmail.com'
+                        )                            
+                            
             }
         }
         stage('Code Analysis') {
