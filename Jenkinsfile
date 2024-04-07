@@ -1,29 +1,34 @@
 pipeline {
     agent any
+	
     environment {
         IMAGE_NAME = 'my-git-hub-project'
     }
+
     stages {
         stage('Build') {
             steps {
 				script {
+					// Commented the docker commands for this task. I will use them as part of 6.2HD task.
 					// Stop and remove the existing Docker container if it exists
 					// sh 'docker stop ${IMAGE_NAME} || true'
 					// sh 'docker rm ${IMAGE_NAME} || true'
 					// Build the Docker image. Assumes Dockerfile includes 'npm install' and 'npm run test'.
-					echo "Building Docker image including npm install and test."
+					// echo "Building Docker image including npm install and test."
 					// sh 'DOCKER_BUILDKIT=1 docker build . -t ${IMAGE_NAME}'
 					// sh 'docker run -d --name ${IMAGE_NAME} -p 8000:8000 ${IMAGE_NAME}'
-                    echo "Maven clean package"
+                    echo "Executing Build stage."
+                    echo "Tool Suggestion: Maven."
+                    echo "Purpose: Maven is used for handling dependencies, & project building."
 				}
             }
         }
         
         stage('Unit and Integration Tests') {
             steps {
-				echo "Running unit and integration tests. Tool suggestion: JUnit for Java, Mockito for mocks, Jest or Mocha for Node.js."
-                // Simulate test command
-                echo "mvn test or npm test"
+				echo "Executing Unit and Integration Tests stage." 
+                echo "Tool suggestion: JUnit for Java; Mockito for mocks; Jest or Mocha for Node.js; Maven for unit, integrations and other forms of automated tests."
+                echo: "Purpose: Identifying and fixing issues in the development cycle."
                 
                 script {
                         def result = currentBuild.currentResult
@@ -31,7 +36,6 @@ pipeline {
                         def buildNumber = env.BUILD_NUMBER
                         def nodeName = env.NODE_NAME ?: 'Unknown Node'
                         def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
-                        //def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
                         def buildURL = env.BUILD_URL
                         // Copy the log file into the current workspace
                         def buildLogPath = "/var/lib/jenkins/jobs/MyGitHubProject/builds/${env.BUILD_NUMBER}/log"
@@ -60,20 +64,20 @@ attachmentsPattern: '**/build.log'
                 }
             }
         }
+
         stage('Code Analysis') {
             steps {
-                echo "Analyzing code quality. Tool suggestion: SonarQube."
-                // Simulate code analysis command
-                echo "Integrate SonarQube scanning in your CI process."
+                echo "Executing Code Analysis stage." 
+                echo "Tool suggestion: SonarQube."
+                echo "Purpose: Integrate SonarQube scanning in your CI process to analyze the code quality and ensure it meets industry standards."
             }
         }
+
         stage('Security Scan') {
             steps {
-                echo "Performing security scans. Tool suggestion: OWASP ZAP for DAST or SonarQube for integrated security scanning."
-                // Simulate security scan command
-                echo "Running OWASP ZAP or SonarQube security scan"
-                // mail bcc: '', body: 'Hello, This is an email from jenkins pipeline.', cc: '', from: '', 
-                // replyTo: '', subject: 'Security Scan stage status', to: 'sapre.dushyant@gmail.com'
+                echo "Executing Security Scan stage." 
+                echo "Tool suggestion: OWASP ZAP."
+                echo "Purpose: Perform dynamic security scanning to identify potential security vulnerabilities in the application."
             
                 script {
                         def result = currentBuild.currentResult
@@ -81,7 +85,6 @@ attachmentsPattern: '**/build.log'
                         def buildNumber = env.BUILD_NUMBER
                         def nodeName = env.NODE_NAME ?: 'Unknown Node'
                         def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
-                        //def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
                         def buildURL = env.BUILD_URL
                         // Copy the log file into the current workspace
                         def buildLogPath = "/var/lib/jenkins/jobs/MyGitHubProject/builds/${env.BUILD_NUMBER}/log"
@@ -110,27 +113,29 @@ attachmentsPattern: '**/build.log'
                 }
             }
         }
+
         stage('Deploy to Staging') {
             steps {
-                echo "Deploying application to a staging environment. Assuming usage of Docker and deployment scripts for AWS EC2."
-                // Simulate deployment command
-                echo "Running deploy_staging.sh for Docker deployment to AWS EC2 staging instance"
+                echo "Executing Deploy to Staging stage."
+                echo "Tool suggestion: Docker with Docker Compose."
+                echo "Purpose: Deploy the application to a staging environment using Docker containers to replicate the production environment as closely as possible for final testing and validation."
             }
         }
+
         stage('Integration Tests on Staging') {
             steps {
-                echo "Running integration tests on the staging environment. Tool suggestion: Selenium for UI testing, Postman for API testing."
-                // Simulate integration test command
-                echo "Running Selenium tests or Postman collection against staging environment"
+                echo "Executing Integration Tests on Staging stage."
+                echo "Tool suggestion: Selenium."
+                echo "Purpose: Run integration tests on the staging environment to ensure the application functions as expected in an environment that closely mirrors production."
             }
         }
+
         stage('Deploy to Production') {
             steps {
-                echo "Deploying application to the production environment. This can involve Docker for container management and AWS CLI or Ansible for deployment to AWS EC2."
-                // Simulate deployment command
-                echo "Running deploy_production.sh for Docker deployment to AWS EC2 production instance"
+                echo "Executing Deploy to Production stage."
+                echo "Tool suggestion: Kubernetes."
+                echo "Purpose: Deploy the application to the production environment using Kubernetes to manage the deployment and ensure high availability and scalability."
             }
         }
-      
     }
 }
