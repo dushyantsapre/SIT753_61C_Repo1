@@ -34,8 +34,10 @@ pipeline {
                         //def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
                         def buildURL = env.BUILD_URL
                         // Copy the log file into the current workspace
-                        sh "sudo -S cp /var/lib/jenkins/jobs/MyGitHubProject/builds/${buildNumber}/log /var/lib/jenkins/workspace/build.log"
-
+                        def buildLogPath = "/var/lib/jenkins/jobs/MyGitHubProject/builds/${env.BUILD_NUMBER}/log"
+                        def workspaceLogPath = "${env.WORKSPACE}/build.log"
+                        sh "cp ${buildLogPath} ${workspaceLogPath}"
+                        
                         emailext(
                             subject: "Unit and Integration Tests stage: ${result}",
                             body: """Hello,
