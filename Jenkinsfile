@@ -19,13 +19,29 @@ pipeline {
             }
         }
         
-		stage('Unit and Integration Tests') {
+        stage('Unit and Integration Tests') {
             steps {
-                echo "Running unit and integration tests. Tool suggestion: JUnit for Java, Mockito for mocks, Jest or Mocha for Node.js."
+				echo "Running unit and integration tests. Tool suggestion: JUnit for Java, Mockito for mocks, Jest or Mocha for Node.js."
                 // Simulate test command
                 echo "mvn test or npm test"
-                mail bcc: '', body: 'Hello, </br> This is an email from jenkins pipeline.', cc: '', from: '', 
-                replyTo: '', subject: 'Unit and Integration stage status', to: 'sapre.dushyant@gmail.com'
+            }
+            post {
+                always {
+                    script {
+                        def status = currentBuild.currentResult
+                        emailext(
+                            subject: "Unit and Integration Tests stage status: ${status}",
+                            body: """Hello,
+
+							This is an email from the Jenkins pipeline.
+							The 'Unit and Integration Tests' stage completed with status: ${status}.
+
+							Best,
+							Jenkins""",
+                            to: 'sapre.dushyant@gmail.com'
+                        )
+                    }
+                }
             }
         }
         stage('Code Analysis') {
