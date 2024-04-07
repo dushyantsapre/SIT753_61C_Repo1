@@ -29,16 +29,22 @@ pipeline {
                 always {
                     script {
                         def result = currentBuild.currentResult
-                        def subject = "Build: ${result}, Job: '${env.JOB_NAME}'"
+                        def jobName = env.JOB_NAME
+                        def buildNumber = env.BUILD_NUMBER
+                        def nodeName = env.NODE_NAME ?: 'Unknown Node'
+                        def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
 
                         mail bcc: '',
                             subject: "Unit and Integration Tests stage status: ${result}",
                             body: """Hello,
 
-							This is an email from the Jenkins pipeline.
+                            This is an email from the Jenkins pipeline.
 							The 'Unit and Integration Tests' stage completed with status: ${result}.
-                                ${subject}.
-
+                            
+                            - Job Name: ${jobName}
+                            - Build Number: ${buildNumber}
+                            - Node Name: ${nodeName}
+                            - Result: ${result}
 							Best,
 							Jenkins""",
                             to: 'sapre.dushyant@gmail.com'
@@ -77,8 +83,6 @@ pipeline {
 							This is an email from the Jenkins pipeline.
 							The 'Security Scan stage' completed with status: ${result}.
                             
-                            his is an email from the Jenkins pipeline.
-
                             - Job Name: ${jobName}
                             - Build Number: ${buildNumber}
                             - Node Name: ${nodeName}
