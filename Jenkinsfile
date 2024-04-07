@@ -46,7 +46,7 @@ The 'Unit and Integration Tests stage' completed with status: ${result}.
 - Node Name: ${nodeName}
 - Result: ${result}
 
-Best,
+Best Regards,
 Jenkins""",
 to: 'sapre.dushyant@gmail.com'
                         )                            
