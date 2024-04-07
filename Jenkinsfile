@@ -54,7 +54,7 @@ The 'Unit and Integration Tests stage' completed with status: ${result}.
 Best Regards,
 Jenkins""",
 to: 'sapre.dushyant@gmail.com',
-attachmentsPattern: "${workspaceLogPath}"
+attachmentsPattern: '**/build.log'
                     )                            
                             
                 }
