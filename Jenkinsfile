@@ -33,6 +33,7 @@ pipeline {
                         def buildNumber = env.BUILD_NUMBER
                         def nodeName = env.NODE_NAME ?: 'Unknown Node'
                         def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
+                        def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
 
                         mail bcc: '',
                             subject: "Unit and Integration Tests stage: ${result}",
@@ -48,7 +49,8 @@ The 'Unit and Integration Tests stage' completed with status: ${result}.
 
 Best,
 Jenkins""",
-                            to: 'sapre.dushyant@gmail.com'
+                            to: 'sapre.dushyant@gmail.com',
+                            attachmentsPattern: logFile
                     }
                 }
             }
@@ -76,6 +78,7 @@ Jenkins""",
                         def buildNumber = env.BUILD_NUMBER
                         def nodeName = env.NODE_NAME ?: 'Unknown Node'
                         def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
+                        def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
 
                         mail bcc: '',
                             subject: "Security Scan stage: ${result}",
@@ -91,7 +94,8 @@ Jenkins""",
 
 							Best,
 							Jenkins""",
-                            to: 'sapre.dushyant@gmail.com'
+                            to: 'sapre.dushyant@gmail.com',
+                            attachmentsPattern: logFile
                     }
                 }
             }
