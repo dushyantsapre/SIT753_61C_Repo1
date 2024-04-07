@@ -74,19 +74,21 @@ attachmentsPattern: '**/build.log'
                 echo "Running OWASP ZAP or SonarQube security scan"
                 // mail bcc: '', body: 'Hello, This is an email from jenkins pipeline.', cc: '', from: '', 
                 // replyTo: '', subject: 'Security Scan stage status', to: 'sapre.dushyant@gmail.com'
-            }
-            post {
-                always {
-                    script {
+            
+                script {
                         def result = currentBuild.currentResult
                         def jobName = env.JOB_NAME
                         def buildNumber = env.BUILD_NUMBER
                         def nodeName = env.NODE_NAME ?: 'Unknown Node'
                         def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
-                        def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
+                        //def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
                         def buildURL = env.BUILD_URL
+                        // Copy the log file into the current workspace
+                        def buildLogPath = "/var/lib/jenkins/jobs/MyGitHubProject/builds/${env.BUILD_NUMBER}/log"
+                        def workspaceLogPath = "${env.WORKSPACE}/build.log"
+                        sh "cp ${buildLogPath} ${workspaceLogPath}"
 
-                        mail bcc: '',
+                        emailext(
                             subject: "Security Scan stage: ${result}",
                             body: """Hello,
 
@@ -99,11 +101,12 @@ The 'Security Scan stage' completed with status: ${result}.
 - Node Name: ${nodeName}
 - Result: ${result}
 
-
-Best,
+Best Regards,
 Jenkins""",
-                            to: 'sapre.dushyant@gmail.com'                        
-                    }
+to: 'sapre.dushyant@gmail.com',
+attachmentsPattern: '**/build.log'
+                    )                            
+                            
                 }
             }
         }
