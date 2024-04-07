@@ -34,6 +34,7 @@ pipeline {
                         def nodeName = env.NODE_NAME ?: 'Unknown Node'
                         def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
                         def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
+                        def buildURL = env.BUILD_URL
 
                         mail bcc: '',
                             subject: "Unit and Integration Tests stage: ${result}",
@@ -41,7 +42,8 @@ pipeline {
 
 This is an email from the Jenkins pipeline.
 The 'Unit and Integration Tests stage' completed with status: ${result}.
-                            
+
+- Build URL: ${buildURL}                            
 - Job Name: ${jobName}
 - Build Number: ${buildNumber}
 - Node Name: ${nodeName}
@@ -49,8 +51,7 @@ The 'Unit and Integration Tests stage' completed with status: ${result}.
 
 Best,
 Jenkins""",
-                            to: 'sapre.dushyant@gmail.com',
-                            attachmentsPattern: logFile
+                            to: 'sapre.dushyant@gmail.com'
                     }
                 }
             }
@@ -97,8 +98,7 @@ The 'Security Scan stage' completed with status: ${result}.
 
 Best,
 Jenkins""",
-                            to: 'sapre.dushyant@gmail.com',
-                            
+                            to: 'sapre.dushyant@gmail.com'                        
                     }
                 }
             }
