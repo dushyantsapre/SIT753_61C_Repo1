@@ -33,9 +33,13 @@ pipeline {
                         def buildNumber = env.BUILD_NUMBER
                         def nodeName = env.NODE_NAME ?: 'Unknown Node'
                         def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
-                        def body = """Hello,
+
+                        mail bcc: '',
+                            subject: "Unit and Integration Tests stage: ${result}",
+                            body: """Hello,
+
 This is an email from the Jenkins pipeline.
-The 'Unit and Integration Tests' stage completed with status: ${result}.
+The 'Unit and Integration Tests stage' completed with status: ${result}.
                             
 - Job Name: ${jobName}
 - Build Number: ${buildNumber}
@@ -43,12 +47,7 @@ The 'Unit and Integration Tests' stage completed with status: ${result}.
 - Result: ${result}
 
 Best,
-Jenkins"""
-                        // Sending the email
-                        mail bcc: '',
-                            from: 'AmazonEC2 Jenkins Setup'
-                            subject: "Unit and Integration Tests stage status: ${result}",
-                            body: body,
+Jenkins""",
                             to: 'sapre.dushyant@gmail.com'
                     }
                 }
