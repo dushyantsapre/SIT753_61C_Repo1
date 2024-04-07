@@ -24,8 +24,7 @@ pipeline {
 				echo "Running unit and integration tests. Tool suggestion: JUnit for Java, Mockito for mocks, Jest or Mocha for Node.js."
                 // Simulate test command
                 echo "mvn test or npm test"
-            }
-            script {
+                script {
                         def result = currentBuild.currentResult
                         def jobName = env.JOB_NAME
                         def buildNumber = env.BUILD_NUMBER
@@ -33,7 +32,7 @@ pipeline {
                         def subject = "Build Result: ${result}, Job: '${jobName}', Build: #${buildNumber}"
                         def logFile = "${env.JENKINS_HOME}/jobs/${jobName}/builds/${buildNumber}/log"
                         def buildURL = env.BUILD_URL
-                        
+
                         emailext(
                             subject: "Unit and Integration Tests stage: ${result}",
                             body: """Hello,
@@ -52,6 +51,7 @@ Jenkins""",
 to: 'sapre.dushyant@gmail.com'
                         )                            
                             
+                }
             }
         }
         stage('Code Analysis') {
